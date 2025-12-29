@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable {
-    use HasFactory, Notifiable, HasUuids;
+    use HasFactory, Notifiable, HasUuids, HasApiTokens;
 
     public $incrementing = false;
     protected $keyType = 'string';
@@ -36,6 +37,11 @@ class User extends Authenticatable {
     protected $hidden = [
         'password',
         'remember_token',
+    ];
+
+    public static array $ROLES = [
+        'admin' => 'Quản trị viên',
+        'user' => 'Người dùng',
     ];
 
     /**
