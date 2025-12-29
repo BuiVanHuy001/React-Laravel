@@ -27,6 +27,7 @@ class User extends Authenticatable {
         'password',
         'avatar',
         'phone_number',
+        'role',
     ];
 
     /**
@@ -58,7 +59,7 @@ class User extends Authenticatable {
         ];
     }
 
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'id';
     }

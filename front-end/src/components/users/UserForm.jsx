@@ -71,9 +71,17 @@ export const UserForm = ({form, onFinish, loading, isEdit = false, avatarPreview
                 name="phone_number"
                 rules={[
                     {
-                        pattern: /^\+\d{1,3}\s\(\d{1,4}\)\s\d{3}-\d{4}$/,
-                        message: 'Định dạng: +1 (441) 944-8968',
+                        pattern: /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,4}[-\s.]?[0-9]{1,9}$/,
+                        message: 'Số điện thoại không hợp lệ. VD: +84 123 456 789, 0123456789, +1 (555) 123-4567',
                     },
+                    {
+                        min: 10,
+                        message: 'Số điện thoại phải có ít nhất 10 số',
+                    },
+                    {
+                        max: 17,
+                        message: 'Số điện thoại không được quá 17 số',
+                    }
                 ]}
             >
                 <Input placeholder="+1 (441) 944-8968"/>

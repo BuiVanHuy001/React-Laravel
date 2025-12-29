@@ -1,46 +1,34 @@
-import axios from "axios";
-
-const API_URL = 'http://127.0.0.1:8000/api/users';
+import {API_PATHS} from "../config/apiPaths.js";
+import api from "../config/apiConfig.js";
 
 export const getUsers = async (page = 1, perPage = 10) => {
-    const response = await axios.get(API_URL, {
+    return await api.get(API_PATHS.USERS.INDEX, {
         params: {
             page,
             per_page: perPage
         }
     });
-
-    return response.data;
 };
 
 export const getUser = async (id) => {
-    const response = await axios.get(API_URL + `/${id}`);
-
-    return response.data;
+    return await api.get(API_PATHS.USERS.SHOW(id));
 }
 
 export const destroyUser = async (id) => {
-    const response = await axios.delete(`${API_URL}/${id}`);
-
-    return response.data;
+    return await api.delete(API_PATHS.USERS.DESTROY(id));
 }
 
 export const storeUser = async (userData) => {
-    const response = await axios.post(API_URL, userData);
-
-    return response.data;
+    return await api.post(API_PATHS.USERS.STORE, userData);
 }
 
 export const updateUser = async (userId, userData) => {
-    // Kiểm tra nếu là FormData thì mới dùng Method Spoofing cho Laravel
+    const url = API_PATHS.USERS.UPDATE(userId);
+
     if (userData instanceof FormData) {
         userData.append('_method', 'PUT');
-        // Laravel yêu cầu POST + _method=PUT khi gửi file
-        const response = await axios.post(`${API_URL}/${userId}`, userData);
-        return response.data;
+        return await api.post(url, userData);
     }
 
-    // Nếu là JSON Object thông thường, sử dụng PATCH/PUT trực tiếp
-    const response = await axios.patch(`${API_URL}/${userId}`, userData);
-    return response.data;
+    return await api.patch(url, userData);
 }

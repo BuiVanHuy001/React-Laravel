@@ -14,7 +14,7 @@ class AuthController extends Controller {
         $credentials = $request->only('email', 'password');
 
         $user = User::where('email', $credentials['email'])->first();
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($credentials['password'], $user->password)) {
             return response()->json([
                 'message' => 'Thông tin đăng nhập không chính xác'
             ], 401);

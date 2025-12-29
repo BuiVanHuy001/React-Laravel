@@ -1,7 +1,8 @@
-import {UserList} from "./pages/UserList.jsx";
+import {RouterProvider} from "react-router-dom";
+import {router} from "./routes/Web.jsx";
 
 function App() {
-    return <UserList/>
+    return <RouterProvider router={router} />
 }
 
 export default App

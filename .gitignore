@@ -9,8 +9,6 @@ Thumbs.db
 # Front-end (Node.js/React/Vite)
 front-end/node_modules/
 front-end/dist/
-front-end/.env
-front-end/.env.local
 front-end/.env.production
 front-end/npm-debug.log*
 front-end/yarn-debug.log*
