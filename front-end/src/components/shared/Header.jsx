@@ -14,7 +14,7 @@ const { Header: AntHeader } = Layout;
 
 export const Header = () => {
     const navigate = useNavigate();
-    const { user, isAuthenticated } = useAuth();
+    const { user, isAuthenticated, logout } = useAuth();
 
     if (!isAuthenticated) return null;
 
@@ -33,6 +33,9 @@ export const Header = () => {
             label: 'Đăng xuất',
             icon: <LogoutOutlined />,
             danger: true,
+            onClick: async () => {
+                await logout();
+            }
         },
     ];
 
@@ -62,7 +65,7 @@ export const Header = () => {
 
                 <Menu
                     mode="horizontal"
-                    selectedKeys={[window.location.pathname]} // Tự động active menu theo URL
+                    selectedKeys={[window.location.pathname]}
                     style={{ flex: 1, borderBottom: 'none' }}
                     items={[
                         {

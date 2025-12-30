@@ -1,5 +1,5 @@
 import axios from "axios";
-import {API_PATHS} from "./apiPaths.js";
+import {WEB_PATHS} from "./webPath.js";
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL
@@ -17,9 +17,13 @@ api.interceptors.response.use(
     response => response.data,
     error => {
         if (error.response?.status === 401) {
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('user');
-            window.location.href = API_PATHS.AUTH.LOGIN;
+            const isLoginRequest = error.config?.url?.includes(WEB_PATHS.AUTH.LOGIN);
+
+            if (!isLoginRequest) {
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('user');
+                window.location.href = WEB_PATHS.AUTH.LOGIN;
+            }
         }
         return Promise.reject(error);
     }

@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
-import {destroyUser, getUsers} from "../services/userService.js";
-import {UsersTable} from "../components/users/UsersTable.jsx";
+import {destroyUser, getUsers} from "../../services/userService.js";
+import {UsersTable} from "../../components/users/UsersTable.jsx";
 import {Button, message} from "antd";
 import {UserAddOutlined} from "@ant-design/icons";
-import {CreateUserModal} from "../components/users/CreateUserModal.jsx";
-import {UserDetailModal} from "../components/users/UserDetailModal.jsx";
-import {UserEditModal} from "../components/users/UserEditModal.jsx";
+import {CreateUserModal} from "../../components/users/CreateUserModal.jsx";
+import {UserDetailModal} from "../../components/users/UserDetailModal.jsx";
+import {UserEditModal} from "../../components/users/UserEditModal.jsx";
 
 export const UserList = () => {
     const [users, setUsers] = useState([]);

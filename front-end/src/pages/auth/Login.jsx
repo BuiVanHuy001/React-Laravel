@@ -2,10 +2,8 @@ import React, {useState} from 'react';
 import {Form, Input, Button, Card, Typography, message} from 'antd';
 import {UserOutlined, LockOutlined} from '@ant-design/icons';
 import {useNavigate} from 'react-router-dom';
-import {API_PATHS} from "../../config/apiPaths.js";
 import {useAuth} from "../../context/AuthContext.jsx";
-import {login as loginApi} from "../../services/authService.js";
-
+import {WEB_PATHS} from "../../config/webPath.js";
 
 const {Title, Text} = Typography;
 
@@ -14,15 +12,13 @@ export const Login = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const onFinish = async (values) => {
+    const onFinish = async (credentials) => {
         setLoading(true);
         try {
-            const response = await loginApi(values);
-            login(response.user, response.access_token);
+            await login(credentials);
             message.success('Đăng nhập thành công!');
-            navigate(API_PATHS.USERS.INDEX);
+            navigate(WEB_PATHS.USERS.INDEX);
         } catch (error) {
-
             const serverMessage = error.response?.data?.message;
             const defaultMessage = 'Có lỗi xảy ra, vui lòng thử lại.';
 
@@ -71,7 +67,10 @@ export const Login = () => {
 
                     <Form.Item
                         name="password"
-                        rules={[{required: true, message: 'Vui lòng nhập Mật khẩu!'}]}
+                        rules={[
+                            {required: true, message: 'Vui lòng nhập mật khẩu!'},
+                            {min: 6, message: 'Mật khẩu phải có ít nhất 6 ký tự'}
+                        ]}
                     >
                         <Input.Password
                             prefix={<LockOutlined/>}

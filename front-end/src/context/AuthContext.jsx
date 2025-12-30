@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useContext} from "react";
+import {loginRequest, logoutRequest} from "../services/authService.js";
 
 const AuthContext = React.createContext();
 
@@ -16,18 +17,30 @@ export const AuthProvider = ({children}) => {
         setLoading(false);
     }, [])
 
-    const login = (userData, token) => {
-        localStorage.setItem('access_token', token);
-        localStorage.setItem('user', JSON.stringify(userData));
-        setUser(userData);
+    const login = async (credentials) => {
+        try {
+            const response = await loginRequest(credentials);
+
+            localStorage.setItem('access_token', response.access_token);
+            localStorage.setItem('user', JSON.stringify(response.user));
+            setUser(response.user);
+        } catch (error) {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('user');
+            setUser(null);
+            throw new Error('Login failed: ' + error.message);
+        }
     };
 
-    const logout = () => {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('user');
-        setUser(null);
+    const logout = async () => {
+        try {
+            await logoutRequest();
+        } finally {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('user');
+            setUser(null);
+        }
     };
-
 
     return (
         <AuthContext.Provider value={{
@@ -45,7 +58,7 @@ export const AuthProvider = ({children}) => {
 }
 
 export const useAuth = () => {
-    const context = React.useContext(AuthContext);
+    const context = useContext(AuthContext);
     if (!context) {
         throw new Error('useAuth must be used within an AuthProvider');
     }
